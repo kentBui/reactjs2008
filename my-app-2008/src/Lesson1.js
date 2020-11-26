@@ -1,9 +1,9 @@
-import { Component, Fragment } from "react";
+import { Component } from "react";
 import "./App.css";
-import Header from "./components/Header";
-import Main from "./components/Main";
+import Header from "./guess/Header";
+import Main from "./guess/Main";
 
-class App extends Component {
+class Lesson1 extends Component {
   state = {
     count: 0,
     value: 0,
@@ -77,7 +77,9 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Lesson1;
 // data chỉ được truyền 1 chiều từ component cha đến component con (binding data là 1 chiều)
 // việc comp cha nhận được dữ liệu từ comp con là do các method của comp cha, nó muốn nhận được
 // value thì nó phải có method để cập nhật
+//
+// when use export {A} => use import {A} from
