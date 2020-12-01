@@ -1,5 +1,8 @@
 import { Button, Card, Checkbox, Input, Form } from "antd";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { login } from "../redux/actions/auth.action";
 
 const layout = {
   labelCol: {
@@ -18,7 +21,9 @@ const tailLayout = {
 
 class Signin extends Component {
   onFinish = (values) => {
-    console.log("Success:", values);
+    // console.log("Success:", values);
+    // call action login
+    this.props.login(values);
   };
 
   onFinishFailed = (errorInfo) => {
@@ -26,14 +31,22 @@ class Signin extends Component {
   };
 
   render() {
+    let { sendingRequest, isLogined } = this.props;
+
+    if (isLogined) {
+      return <Redirect to="/" />;
+    }
+
     return (
       <Card title="Sign In" style={{ width: 500, margin: "20px auto" }}>
         <Form
           {...layout}
           name="basic"
-          initialValues={{
-            remember: true,
-          }}
+          initialValues={
+            {
+              // remember: true,
+            }
+          }
           onFinish={this.onFinish}
           onFinishFailed={this.onFinishFailed}
         >
@@ -46,11 +59,17 @@ class Signin extends Component {
                 message: "Please input your username!",
               },
               {
-                validator: (rule, value, cb) => {
-                  console.log(rule, value, cb);
+                // custom validate
+                validator: (rule, value) => {
+                  // console.log(rule, value);
                   if (value && value.length < 3) {
-                    cb("Length must more than 3");
+                    return Promise.reject("Length must more than 3");
                   }
+                  if (value && value.length > 24) {
+                    return Promise.reject("Length must less than or equal 24");
+                  }
+
+                  return Promise.resolve();
                 },
               },
             ]}
@@ -71,13 +90,13 @@ class Signin extends Component {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item {...tailLayout} name="remember" valuePropName="checked">
+          {/* <Form.Item {...tailLayout} name="remember" valuePropName="checked">
             <Checkbox>Remember me</Checkbox>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              Submit
+            <Button loading={sendingRequest} type="primary" htmlType="submit">
+              {sendingRequest ? "Handling" : "Submit"}
             </Button>
           </Form.Item>
         </Form>
@@ -86,4 +105,17 @@ class Signin extends Component {
   }
 }
 
-export default Signin;
+const mapState = (state) => {
+  console.log(state);
+  return {
+    isLogined: state.auth.isLogined,
+    message: state.auth.message,
+    sendingRequest: state.auth.sendingRequest,
+  };
+};
+
+// const mapDispatch = (dispatch) => {
+//   return { login: (user) => dispatch(login(user)) };
+// };
+
+export default connect(mapState, { login })(Signin);

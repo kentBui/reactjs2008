@@ -5,9 +5,10 @@ import {
   Route,
   Switch,
 } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import Signin from "./Signin";
-import Signup from "./Signup";
+import Dashboard from "./views/Dashboard";
+import PrivateRoute from "./shareComponents/PrivateRoute";
+import Signin from "./views/Signin";
+import Signup from "./views/Signup";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <Switch>
         <Route exact path="/signin" component={Signin} />
         <Route exact path="/signup" component={Signup} />
-        <Route path="/" component={Dashboard} />
+        <PrivateRoute path="/" component={Dashboard} />
       </Switch>
     </Router>
   );
