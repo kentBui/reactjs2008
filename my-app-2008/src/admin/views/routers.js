@@ -16,7 +16,7 @@ export const routers = [
     children: [
       {
         name: "Add user",
-        path: "/users/add",
+        path: "/user/add",
         icon: "",
         component: <AddUser />, // tao ra instance for component
       },
@@ -25,6 +25,19 @@ export const routers = [
         path: "/user/list",
         icon: "",
         component: <ListUsers />,
+      },
+      {
+        name: "View user",
+        path: "/user/:id",
+        icon: "",
+        component: <h1> View</h1>,
+      },
+      {
+        name: "Update user",
+        path: "/user/edit/:id",
+        icon: "",
+        component: <AddUser />,
+        hidden: true,
       },
     ],
   },

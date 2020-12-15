@@ -39,11 +39,14 @@ class Dashboard extends React.Component {
                 </Menu.Item>
               ) : (
                 <SubMenu key={menu.path} icon={<UserOutlined />} title="User">
-                  {menu.children.map((subMenu) => (
-                    <Menu.Item key={subMenu.path}>
-                      <Link to={subMenu.path}>{subMenu.name}</Link>
-                    </Menu.Item>
-                  ))}
+                  {menu.children.map(
+                    (subMenu) =>
+                      !subMenu.hidden && (
+                        <Menu.Item key={subMenu.path}>
+                          <Link to={subMenu.path}>{subMenu.name}</Link>
+                        </Menu.Item>
+                      )
+                  )}
                 </SubMenu>
               )
             )}
